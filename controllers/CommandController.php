@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__.'/../models/CommandModel.php');
+require_once(__DIR__.'/../models/UserModel.php');
 require_once('BaseController.php');
 require_once(__DIR__.'/../validators/ErrorHandler.php');
 
@@ -11,15 +12,26 @@ class CommandController extends BaseController {
     }
 
     public function create($data) {
-        $error = $this->model->validateInput($data);
+        $errorMessages = array(
+            'user_id' => 'User ID is required.'
+        );
+        $error = $this->model->validateInput($data , $errorMessages);
         if ($error !== null) {
             return $error;
         }
 
         // Set attributes in the model
         $this->setModelAttributes($data);
-
-        // Create the command in the database
+        // check if the user exists in the database
+        $userModel = new UserModel();
+        $userModel->setId($data['user_id']);
+        $user = $userModel->getUserById();
+        if (!$user) {
+            return ErrorHandler::badRequestError("User does not exist.");
+        }
+        else
+        {
+              // Create the command in the database
         if ($this->model->createCommand()) {
             return array(
                 "success" => true,
@@ -28,10 +40,15 @@ class CommandController extends BaseController {
         } else {
             return ErrorHandler::serverError("Failed to create command.");
         }
+        }
+      
     }
 
     public function read($id) {
-        $error = $this->model->validateInput(array('id' => $id));
+        $rules = array(
+            'id' => 'Command ID is required.'
+        );
+       $error = $this->model->validateInput(array('id' => $id), $rules);
         if ($error !== null) {
             return $error;
         }
@@ -53,7 +70,10 @@ class CommandController extends BaseController {
     }
 
     public function update($id, $data) {
-        $error = $this->model->validateInput($data);
+        $rules = array(
+            'user_id' => 'User ID is required.'
+        );
+        $error = $this->model->validateInput($data , $rules);
         if ($error !== null) {
             return $error;
         }
@@ -61,8 +81,21 @@ class CommandController extends BaseController {
         // Set attributes in the model
         $this->model->setId($id);
         $this->setModelAttributes($data);
-
-        // Update the command in the database
+       // check if command exist in database 
+        $command = $this->model->getCommandById();
+        if (!$command) {
+            return ErrorHandler::badRequestError("Command does not exist.");
+        }
+        // check if the user exists in the database
+        $userModel = new UserModel();
+        $userModel->setId($data['user_id']);
+        $user = $userModel->getUserById();
+        if (!$user) {
+            return ErrorHandler::badRequestError("User does not exist.");
+        }
+        else
+        {
+                 // Update the command in the database
         if ($this->model->updateCommand()) {
             return array(
                 "success" => true,
@@ -71,6 +104,9 @@ class CommandController extends BaseController {
         } else {
             return ErrorHandler::serverError("Failed to update command.");
         }
+        }
+   
+      
     }
 
     public function delete($id) {
@@ -104,7 +140,11 @@ class CommandController extends BaseController {
     }
 
     private function setModelAttributes($data) {
-        $this->model->setCreationDate($data['creation_date']);
+        if (isset($data['creation_date'])) {
+            $this->model->setCreationDate($data['creation_date']);
+        } else {
+            $this->model->setCreationDate(date('Y-m-d H:i:s'));
+        }
         $this->model->setUserId($data['user_id']);
     }
 }
