@@ -60,16 +60,45 @@ class ProductController extends BaseController {
             'image' => 'Product image is required.',
             'category' => 'Product category is required.'
         );
-        $error = $this->validateInput($data, $requiredFields);
+        $validFields = array();
+        $error = null;
+        foreach ($data as $key => $value) {
+            if (array_key_exists($key, $requiredFields) && !empty($value)) {
+                $validFields[$key] = $value;
+            }
+        }
+        if (empty($validFields)) {
+            $error = 'No valid fields provided for update.';
+        }
         if ($error !== null) {
             return $error;
         }
         // Set attributes in the model
         $this->model->setId($id);
-        //check if the product exists in the database
-        $this->setModelAttributes($data);
-      
-        return var_dump($this->model);
+        $this->setModelAttributes($validFields);
+        //check product if exist by id
+        $product = $this->model->getProductById();
+        if (!$product) {
+            return ErrorHandler::notFoundError("Product not found.");
+        }
+        else
+        {
+             //check if the category exists in the database
+        $categoryModel = new CategoryModel();
+        $categoryModel->setId($validFields['category']);
+        $category = $categoryModel->getCategoryById();
+        if (!$category) {
+            return ErrorHandler::badRequestError("Category does not exist.");
+        }
+        else
+        {
+            // Update the product in the database
+        return $this->model->updateProduct();
+        }
+        }
+        
+       
+        
        
     }
 
