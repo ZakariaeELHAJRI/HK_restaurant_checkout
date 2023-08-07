@@ -91,32 +91,52 @@ class ProductModel {
     
 
     public function getProductById() {
+     //get product bi id 
         $stmt = $this->conn->prepare("SELECT * FROM products WHERE id = ?");
         $stmt->bind_param("i", $this->id);
         $stmt->execute();
         $result = $stmt->get_result();
         $product = $result->fetch_assoc();
-        if ($product) {
-            return array(
-                "success" => true,
-                "data" => $product
-            );
-        } else {
-            return ErrorHandler::notFoundError("Product not found.");
-        }
+        return $product;
     }
 
     public function updateProduct() {
-        $stmt = $this->conn->prepare("UPDATE products SET name=?, price=?, tva=?, image=?, creation_date=?, category=? WHERE id = ?");
-        $stmt->bind_param("sddsssi", $this->name, $this->price, $this->tva, $this->image, $this->creation_date, $this->category, $this->id);
+        $updateFields = array();
+        $params = array();
+        $fields = array(
+            'name' => &$this->name,
+            'price' => &$this->price,
+            'tva' => &$this->tva,
+            'image' => &$this->image,
+            'creation_date' => &$this->creation_date,
+            'category' => &$this->category
+        );
+        $types = '';
+        foreach ($fields as $fieldName => &$fieldValue) {
+            if (!empty($fieldValue)) {
+                $updateFields[] = "$fieldName=?";
+                $types .= 's';
+                $params[] = &$fieldValue;
+            }
+        }
+        if (empty($updateFields)) {
+            return ErrorHandler::badRequestError("No valid fields provided for update.");
+        }
+        $params[] = &$this->id;
+        $types .= 'i';
+        $stmt = $this->conn->prepare("UPDATE products SET " . implode(',', $updateFields) . " WHERE id = ?");
+        call_user_func_array(array($stmt, 'bind_param'), array_merge(array($types), $params));
         if ($stmt->execute()) {
             return array(
                 "success" => true,
                 "message" => "Product updated successfully."
             );
         } else {
-            return ErrorHandler::serverError("Failed to update product." . $stmt->error);
-        }
+            return ErrorHandler::serverError("Failed to update product.");
+        }   
+
+
+   
     }
 
     public function deleteProduct() {
