@@ -5,7 +5,7 @@ class LigneCommandModel {
     private $conn;
     private $id;
     private $quantity;
-    private $ligne_command_id;
+    private $id_command;
     private $product_id;
 
     public function __construct() {
@@ -31,12 +31,12 @@ class LigneCommandModel {
         return $this->quantity;
     }
 
-    public function setLigneCommandId($ligne_command_id) {
-        $this->ligne_command_id = $ligne_command_id;
+    public function setLigneCommandId($id_command) {
+        $this->id_command = $id_command;
     }
 
     public function getLigneCommandId() {
-        return $this->ligne_command_id;
+        return $this->id_command;
     }
 
     public function setProductId($product_id) {
@@ -48,8 +48,8 @@ class LigneCommandModel {
     }
 
     public function createLigneCommand() {
-        $stmt = $this->conn->prepare("INSERT INTO ligne_commands (quantity, ligne_command_id, product_id) VALUES (?, ?, ?)");
-        $stmt->bind_param("iii", $this->quantity, $this->ligne_command_id, $this->product_id);
+        $stmt = $this->conn->prepare("INSERT INTO ligne_commands (quantity, id_command, product_id) VALUES (?, ?, ?)");
+        $stmt->bind_param("iii", $this->quantity, $this->id_command, $this->product_id);
         return $stmt->execute();
     }
 
@@ -62,8 +62,8 @@ class LigneCommandModel {
     }
 
     public function updateLigneCommand() {
-        $stmt = $this->conn->prepare("UPDATE ligne_commands SET quantity=?, ligne_command_id=?, product_id=? WHERE id = ?");
-        $stmt->bind_param("iiii", $this->quantity, $this->ligne_command_id, $this->product_id, $this->id);
+        $stmt = $this->conn->prepare("UPDATE ligne_commands SET quantity=?, id_command=?, product_id=? WHERE id = ?");
+        $stmt->bind_param("iiii", $this->quantity, $this->id_command, $this->product_id, $this->id);
         return $stmt->execute();
     }
 
@@ -90,7 +90,7 @@ class LigneCommandModel {
         // Add validation rules for input data
         $rules = array(
             'quantity' => 'Quantity is required.',
-            'ligne_command_id' => 'Ligne command ID is required.',
+            'id_command' => 'Ligne command ID is required.',
             'product_id' => 'Product ID is required.'
         );
 
