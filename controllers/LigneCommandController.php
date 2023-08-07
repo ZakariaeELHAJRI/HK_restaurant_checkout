@@ -2,6 +2,8 @@
 require_once(__DIR__.'/../models/LigneCommandModel.php');
 require_once('BaseController.php');
 require_once(__DIR__.'/../validators/ErrorHandler.php');
+require_once(__DIR__.'/../models/CommandModel.php');
+require_once(__DIR__.'/../models/ProductModel.php');
 
 class LigneCommandController extends BaseController {
     private $model;
@@ -18,7 +20,16 @@ class LigneCommandController extends BaseController {
 
         // Set attributes in the model
         $this->setModelAttributes($data);
-
+        //check if the command exists in the database using the function checkCommandExist
+        $errorCommand = $this->checkCommandExist($data['id_command']);
+        if ($errorCommand !== null) {
+            return ErrorHandler::badRequestError($errorCommand);
+        }
+        //check if the product exists in the database using the function checkProductExist
+        $errorProduct = $this->checkProductExist($data['product_id']);
+        if ($errorProduct !== null) {
+            return ErrorHandler::badRequestError($errorProduct);
+        }
         // Create the ligne command in the database
         if ($this->model->createLigneCommand()) {
             return array(
@@ -26,7 +37,7 @@ class LigneCommandController extends BaseController {
                 "message" => "Ligne command created successfully."
             );
         } else {
-            return ErrorHandler::serverError("Failed to create ligne command.");
+            return ErrorHandler::serverError("Failed to create ligne command. ");
         }
     }
 
@@ -61,6 +72,21 @@ class LigneCommandController extends BaseController {
         // Set attributes in the model
         $this->model->setId($id);
         $this->setModelAttributes($data);
+    // check ligne command exist in database 
+        $ligne_command = $this->model->getLigneCommandById();
+        if (!$ligne_command) {
+            return ErrorHandler::badRequestError("Ligne command does not exist.");
+        }
+      //check if the command exists in the database using the function checkCommandExist
+      $errorCommand = $this->checkCommandExist($data['id_command']);
+      if ($errorCommand !== null) {
+          return ErrorHandler::badRequestError($errorCommand);
+      }
+      //check if the product exists in the database using the function checkProductExist
+      $errorProduct = $this->checkProductExist($data['product_id']);
+      if ($errorProduct !== null) {
+          return ErrorHandler::badRequestError($errorProduct);
+      }
 
         // Update the ligne command in the database
         if ($this->model->updateLigneCommand()) {
@@ -105,8 +131,27 @@ class LigneCommandController extends BaseController {
 
     private function setModelAttributes($data) {
         $this->model->setQuantity($data['quantity']);
-        $this->model->setLigneCommandId($data['ligne_command_id']);
+        $this->model->setLigneCommandId($data['id_command']);
         $this->model->setProductId($data['product_id']);
     }
+
+    private function checkCommandExist($id_command) {
+        $commandModel = new CommandModel();
+        $commandModel->setId($id_command);
+        $command = $commandModel->getCommandById();
+        if (!$command) {
+            return "Command does not exist."; // Return the error message directly
+        }
+    }
+    
+    private function checkProductExist($product_id) {
+        $productModel = new ProductModel();
+        $productModel->setId($product_id);
+        $product = $productModel->getProductById();
+        if (!$product) {
+            return "Product does not exist."; // Return the error message directly
+        }
+    }
+    
 }
 ?>
