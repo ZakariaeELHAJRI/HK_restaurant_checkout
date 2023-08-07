@@ -23,6 +23,7 @@ class CommandModel {
     }
 
     public function setCreationDate($creation_date) {
+        
         $this->creation_date = $creation_date;
     }
 
@@ -77,19 +78,12 @@ class CommandModel {
         return $commands;
     }
 
-    public function validateInput($data) {
-        // Add validation rules for input data
-        $rules = array(
-            'creation_date' => 'Creation date is required.',
-            'user_id' => 'User ID is required.'
-        );
-
-        foreach ($rules as $field => $message) {
-            if (!isset($data[$field]) || empty($data[$field])) {
-                return ErrorHandler::invalidInputError($message);
+    public function validateInput($data, $errorMessages) {
+        foreach ($errorMessages as $field => $errorMessage) {
+            if (!array_key_exists($field, $data) || empty($data[$field])) {
+                return ErrorHandler::invalidInputError($errorMessage);
             }
         }
-
-        return null; // No validation error
+        return null; // 
     }
 }
