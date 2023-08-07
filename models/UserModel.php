@@ -187,7 +187,7 @@ class UserModel {
                 return ErrorHandler::invalidInputError($errorMessage);
             }
         }
-        return null; // Return null if input is valid
+        return null; // 
     }
 }
 ?>
