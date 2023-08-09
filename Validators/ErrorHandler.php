@@ -39,6 +39,15 @@ class ErrorHandler {
             )
         );
     }
+    public static function unauthorizedError($message) {
+        return array(
+            "success" => false,
+            "error" => array(
+                "message" => $message,
+                "code" => 401
+            )
+        );
+    }
 
 }
 ?>
