@@ -29,9 +29,16 @@ class UserController extends BaseController {
         $this->setModelAttributes($data);
         //before creating the user, check if the user already exists in the database by email
         $user = $this->model->getUserByEmail();
-        if ($user) {
-            return ErrorHandler::badRequestError("User already exists.");
-        }
+    if ($user) {
+        return ErrorHandler::badRequestError("User already exists.");
+    }
+
+        // Hash the password
+        $hashedPassword = password_hash($this->model->getPassword(), PASSWORD_BCRYPT);
+
+        // Set the hashed password in the model
+        $this->model->setPassword($hashedPassword);
+
         // Create the user in the database
         return $this->model->createUser();
     }
