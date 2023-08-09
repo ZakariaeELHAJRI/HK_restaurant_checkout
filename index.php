@@ -18,6 +18,18 @@ $parts = explode('/', $endpoint);
 $resource = array_shift($parts);
 // Based on the resource name, instantiate the appropriate controller
 $controller = null;
+if ($resource === 'login') {
+    require_once('./controllers/LoginController.php');
+    $loginController = new LoginController();
+    
+    if ($method === 'POST') {
+        $response = $loginController->authenticateUser($data['email'], $data['password']);
+        echo json_encode($response);
+        exit;
+    }
+}
+
+
 switch ($resource) {
     case 'user':
         require_once('./controllers/UserController.php');
