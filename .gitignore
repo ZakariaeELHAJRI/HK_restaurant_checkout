@@ -1,0 +1,35 @@
+# Ignore Composer's vendor directory
+/vendor/
+
+# Ignore environment-specific files
+/.env
+
+# Ignore IDE-specific files and directories
+.idea/
+.vscode/
+
+# Ignore logs and cache directories
+/logs/
+/cache/
+
+# Ignore build artifacts
+/build/
+
+# Ignore package-lock.json for NPM projects
+package-lock.json
+
+# Ignore user-specific settings files
+*.sublime-project
+*.sublime-workspace
+
+# Ignore backup files
+*~
+# Ignore system-specific files
+.DS_Store
+
+# Ignore temporary files
+*.tmp
+*.swp
+
+# Ignore configuration files with sensitive information
+config.php
