@@ -93,15 +93,8 @@ class UserModel {
         $stmt->bind_param("s", $this->email);
         $stmt->execute();
         $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-        if ($user) {
-            return array(
-                "success" => true,
-                "data" => $user
-            );
-        } else {
-            return null;
-        }
+        return $result->fetch_assoc();
+    
     }
    
 
