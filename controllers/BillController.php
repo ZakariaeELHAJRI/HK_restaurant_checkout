@@ -3,6 +3,7 @@ require_once(__DIR__.'/../models/BillModel.php');
 require_once('BaseController.php');
 require_once(__DIR__.'/../validators/ErrorHandler.php');
 require_once(__DIR__.'/../models/CommandModel.php');
+require_once(__DIR__.'/../middleware/RoleMiddleware.php');
 
 
 class BillController extends BaseController {
@@ -13,6 +14,7 @@ class BillController extends BaseController {
     }
 
     public function create($data) {
+        RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
         $requiredFields = array(
             'payment_method' => 'Bill payment method is required.',
             'command_id' => 'Bill command id is required.'
@@ -43,6 +45,7 @@ class BillController extends BaseController {
     }
 
     public function read($id) {
+        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron" , "caissier"));
         $error = $this->model->validateInput(array('id' => $id));
         if ($error !== null) {
             return $error;
@@ -60,6 +63,7 @@ class BillController extends BaseController {
     }
 
     public function update($id, $data) {
+        RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $requiredFields = array(
             'payment_method' => 'Bill payment method is required.',
             'command_id' => 'Bill command id is required.'
@@ -92,6 +96,7 @@ class BillController extends BaseController {
     }
 
     public function delete($id) {
+        RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $error = $this->model->validateInput(array('id' => $id));
         if ($error !== null) {
             return $error;
@@ -117,6 +122,7 @@ class BillController extends BaseController {
     }
 
     public function getAll() {
+        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron" , "caissier"));
       $bills = $this->model->getAllBills();
         if ($bills) {
             return $bills;
