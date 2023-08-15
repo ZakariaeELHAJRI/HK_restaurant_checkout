@@ -3,6 +3,7 @@ require_once(__DIR__.'/../models/CommandModel.php');
 require_once(__DIR__.'/../models/UserModel.php');
 require_once('BaseController.php');
 require_once(__DIR__.'/../validators/ErrorHandler.php');
+require_once(__DIR__.'/../middleware/RoleMiddleware.php');
 
 class CommandController extends BaseController {
     private $model;
@@ -12,6 +13,7 @@ class CommandController extends BaseController {
     }
 
     public function create($data) {
+        RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
         $errorMessages = array(
             'user_id' => 'User ID is required.'
         );
@@ -45,6 +47,7 @@ class CommandController extends BaseController {
     }
 
     public function read($id) {
+        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
         $rules = array(
             'id' => 'Command ID is required.'
         );
@@ -70,6 +73,7 @@ class CommandController extends BaseController {
     }
 
     public function update($id, $data) {
+        RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $rules = array(
             'user_id' => 'User ID is required.'
         );
@@ -110,6 +114,7 @@ class CommandController extends BaseController {
     }
 
     public function delete($id) {
+        RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $error = $this->model->validateInput(array('id' => $id));
         if ($error !== null) {
             return $error;
@@ -130,6 +135,7 @@ class CommandController extends BaseController {
     }
 
     public function getAll() {
+        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
         // Get all commands from the database
         $commands = $this->model->getAllCommands();
 
