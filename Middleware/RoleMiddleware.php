@@ -2,7 +2,6 @@
 require_once(__DIR__.'/../vendor/autoload.php');
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-
 class RoleMiddleware {
     public static function authorizeRoles($allowedRoles) {
         $headers = getallheaders();
