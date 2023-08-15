@@ -28,8 +28,6 @@ if ($resource === 'login') {
         exit;
     }
 }
-
-
 switch ($resource) {
     case 'user':
         require_once('./controllers/UserController.php');
