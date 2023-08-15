@@ -4,6 +4,7 @@ require_once('BaseController.php');
 require_once(__DIR__.'/../validators/ErrorHandler.php');
 require_once(__DIR__.'/../models/CommandModel.php');
 require_once(__DIR__.'/../models/ProductModel.php');
+require_once(__DIR__.'/../middleware/RoleMiddleware.php');
 
 class LigneCommandController extends BaseController {
     private $model;
@@ -13,6 +14,7 @@ class LigneCommandController extends BaseController {
     }
 
     public function create($data) {
+        RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
         $error = $this->model->validateInput($data);
         if ($error !== null) {
             return $error;
@@ -42,6 +44,7 @@ class LigneCommandController extends BaseController {
     }
 
     public function read($id) {
+        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
         $error = $this->model->validateInput(array('id' => $id));
         if ($error !== null) {
             return $error;
@@ -64,6 +67,7 @@ class LigneCommandController extends BaseController {
     }
 
     public function update($id, $data) {
+        RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $error = $this->model->validateInput($data);
         if ($error !== null) {
             return $error;
@@ -100,6 +104,7 @@ class LigneCommandController extends BaseController {
     }
 
     public function delete($id) {
+        RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $error = $this->model->validateInput(array('id' => $id));
         if ($error !== null) {
             return $error;
@@ -120,6 +125,7 @@ class LigneCommandController extends BaseController {
     }
 
     public function getAll() {
+        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
         // Get all ligne commands from the database
         $ligne_commands = $this->model->getAllLigneCommands();
 
