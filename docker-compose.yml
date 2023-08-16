@@ -1,0 +1,14 @@
+version: '3'
+services:
+  api:
+    build: .
+    ports:
+      - "8080:80" # Map host port to container port
+    env_file:
+      - .env  # Load environment variables from .env file
+
+  db:
+    image: mysql
+    env_file:
+      - .env  # Load environment variables from .env file
+
