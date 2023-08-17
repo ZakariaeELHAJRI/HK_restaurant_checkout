@@ -30,8 +30,6 @@ class LoginController {
                 "role" => $user['role']
             );
             $jwtToken = JWT::encode($jwtPayload, 'test123_test123', 'HS256');
-          //  session_start();
-          //  $_SESSION['jwt_token'] = $jwtToken;
             return array(
                 "success" => true,
                 "token" => $jwtToken
@@ -40,7 +38,7 @@ class LoginController {
 
             return array(
                 "success" => false,
-                "message" => "Invalid password."
+                "message" => "$user[password]"
             );
         }
     }
