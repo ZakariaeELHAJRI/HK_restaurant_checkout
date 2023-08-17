@@ -45,7 +45,7 @@ class UserController extends BaseController {
     }
 
     public function read($id) {
-      RoleMiddleware::authorizeRoles(array("gestionnaire"));
+     RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $rules = array(
             'id' => 'User ID is required.'
         );
@@ -72,7 +72,7 @@ class UserController extends BaseController {
     }
 
     public function update($id, $data) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire"));
+       RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $rules = array(
             'username' => 'Username is required.',
             'email' => 'Valid email is required.',
@@ -95,8 +95,17 @@ class UserController extends BaseController {
         }
         // Set attributes in the model
         $this->model->setId($id);
+        
+        // Check if the password is being updated
+        if (isset($validFields['password'])) {
+            // Hash the new password
+            $hashedPassword = password_hash($validFields['password'], PASSWORD_BCRYPT);
+            $validFields['password'] = $hashedPassword;
+        }
+    
         $this->setModelAttributes($validFields);
-        //check user if exist by id 
+    
+        // Check if the user exists by id 
         $user = $this->model->getUserById();
         if ($user) {
             $this->model->updateUser();
@@ -107,8 +116,8 @@ class UserController extends BaseController {
         } else {
             return ErrorHandler::notFoundError("User not found.");
         }
-       
     }
+    
     
 
     public function delete($id) {
