@@ -14,8 +14,13 @@ class LigneCommandController extends BaseController {
     }
 
     public function create($data) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
-        $error = $this->model->validateInput($data);
+        //RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
+        $requiredFields = array(
+            'quantity' => 'Ligne command quantity is required.',
+            'id_command' => 'Ligne command id_command is required.',
+            'product_id' => 'Ligne command product_id is required.'
+        );
+        $error = $this->model->validateInput($data , $requiredFields);
         if ($error !== null) {
             return $error;
         }
@@ -44,8 +49,11 @@ class LigneCommandController extends BaseController {
     }
 
     public function read($id) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
-        $error = $this->model->validateInput(array('id' => $id));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
+        $requiredFields = array(
+            'id' => 'Ligne command ID is required.'
+        );
+        $error = $this->model->validateInput(array('id' => $id) , $requiredFields);
         if ($error !== null) {
             return $error;
         }
@@ -67,8 +75,22 @@ class LigneCommandController extends BaseController {
     }
 
     public function update($id, $data) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire"));
-        $error = $this->model->validateInput($data);
+        //RoleMiddleware::authorizeRoles(array("gestionnaire"));
+        $requiredFields = array(
+            'quantity' => 'Ligne command quantity is required.',
+            'id_command' => 'Ligne command id_command is required.',
+            'product_id' => 'Ligne command product_id is required.'
+        );
+        $validFields = array();
+        $error = null;
+        foreach ($data as $key => $value) {
+            if (array_key_exists($key, $requiredFields) && !empty($value)) {
+                $validFields[$key] = $value;
+            }
+        }
+        if (empty($validFields)) {
+            $error = 'No valid fields provided for update.';
+        }
         if ($error !== null) {
             return $error;
         }
@@ -104,8 +126,11 @@ class LigneCommandController extends BaseController {
     }
 
     public function delete($id) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire"));
-        $error = $this->model->validateInput(array('id' => $id));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire"));
+        $requiredFields = array(
+            'id' => 'Ligne command ID is required.'
+        );
+        $error = $this->model->validateInput(array('id' => $id) , $requiredFields);
         if ($error !== null) {
             return $error;
         }
@@ -125,7 +150,7 @@ class LigneCommandController extends BaseController {
     }
 
     public function getAll() {
-        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
         // Get all ligne commands from the database
         $ligne_commands = $this->model->getAllLigneCommands();
 
