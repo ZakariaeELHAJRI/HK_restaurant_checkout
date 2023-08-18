@@ -9,7 +9,7 @@ require_once(__DIR__ . '/../middleware/RoleMiddleware.php');
 require_once(__DIR__ . '/../middleware/MockRoleMiddleware.php');
 
 class ProductControllerTest extends TestCase {
-    // ... Similar setUp method as before
+   
 
  
     public function testCreateProduct() {
