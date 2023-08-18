@@ -86,20 +86,18 @@ class LigneCommandModel {
         return $ligneCommands;
     }
 
-    public function validateInput($data) {
-        // Add validation rules for input data
-        $rules = array(
-            'quantity' => 'Quantity is required.',
-            'id_command' => 'Ligne command ID is required.',
-            'product_id' => 'Product ID is required.'
-        );
+    public function validateInput($data, $requiredFields) {
+        $error = null;
 
-        foreach ($rules as $field => $message) {
-            if (!isset($data[$field]) || empty($data[$field])) {
-                return ErrorHandler::invalidInputError($message);
+        foreach ($requiredFields as $key => $value) {
+            if (!isset($data[$key])) {
+                $error = array(
+                    'message' => $value
+                );
+                break;
             }
         }
 
-        return null; // No validation error
+        return $error;
     }
 }
