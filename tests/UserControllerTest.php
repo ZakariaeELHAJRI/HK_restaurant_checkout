@@ -130,7 +130,21 @@ class UserControllerTest extends TestCase {
         $userModelMock = $this->getMockBuilder(UserModel::class)
             ->disableOriginalConstructor()
             ->getMock();
-    
+        $userModelMock ->method('getAllUsers')
+            ->willReturn([
+                'success' => true,
+                'data' => [
+                    [
+                        'id' => 1,
+                        'username' => 'newusername',
+                        'email' => 'new@example.com',
+                        'password' => 'newpassword',
+                        'telephone' => '9876543210',
+                        'role' => 'admin'
+                    ]
+                ]
+            ]);
+
         $userController = new UserController();
         $userController->userModel = $userModelMock;
     
