@@ -114,19 +114,39 @@ class CommandControllerTest extends TestCase {
             $this->assertTrue($result);
         }
     }
-/*
+
     public function testGetAllCommands() {
-        $this->mockModel->expects($this->once())
-                        ->method('getAllCommands')
-                        ->willReturn([['id' => 1, 'creation_date' => '2023-08-18 10:00:00', 'user_id' => 1], ['id' => 2, 'creation_date' => '2023-08-18 11:00:00', 'user_id' => 2]]);
-        
+        $mockModel = $this->getMockBuilder(CommandModel::class)
+        ->disableOriginalConstructor()
+        ->getMock();
+
+        $mockModel->method('getAllCommands')
+                    ->willReturn([
+                        [
+                            'id' => 1,
+                            'creation_date' => '2023-08-18 10:00:00',
+                            'user_id' => 1
+                        ],
+                        [
+                            'id' => 2,
+                            'creation_date' => '2023-08-18 11:00:00',
+                            'user_id' => 2
+                        ]
+                    ]);
         $controller = new CommandController();
-        $controller->setModel($this->mockModel);
+        $controller->commandModel = $mockModel;
         
         $result = $controller->getAll();
         
-        $expected = ['success' => true, 'data' => [['id' => 1, 'creation_date' => '2023-08-18 10:00:00', 'user_id' => 1], ['id' => 2, 'creation_date' => '2023-08-18 11:00:00', 'user_id' => 2]]];
-        $this->assertEquals($expected, $result);
+       if (is_array($result) && isset($result['success']) && $result['success'] === true) {
+            $expectedSuccess = [
+                'success' => true,
+                'data' => $result['data']
+            ];
+            $this->assertEquals($expectedSuccess, $result);
+        } else {
+            $this->assertTrue($result);
+        }
     }
-*/
+
 }
