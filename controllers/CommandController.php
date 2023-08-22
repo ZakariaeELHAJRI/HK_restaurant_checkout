@@ -115,7 +115,10 @@ class CommandController extends BaseController {
 
     public function delete($id) {
         //RoleMiddleware::authorizeRoles(array("gestionnaire"));
-        $error = $this->model->validateInput(array('id' => $id));
+        $rules = array(
+            'id' => 'Command ID is required.'
+        );
+        $error = $this->model->validateInput(array('id' => $id ) , $rules);
         if ($error !== null) {
             return $error;
         }
