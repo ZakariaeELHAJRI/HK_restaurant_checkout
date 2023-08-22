@@ -13,7 +13,7 @@ class CommandController extends BaseController {
     }
 
     public function create($data) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
         $errorMessages = array(
             'user_id' => 'User ID is required.'
         );
@@ -47,7 +47,7 @@ class CommandController extends BaseController {
     }
 
     public function read($id) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
         $rules = array(
             'id' => 'Command ID is required.'
         );
@@ -73,7 +73,7 @@ class CommandController extends BaseController {
     }
 
     public function update($id, $data) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire"));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $rules = array(
             'user_id' => 'User ID is required.'
         );
@@ -114,8 +114,11 @@ class CommandController extends BaseController {
     }
 
     public function delete($id) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire"));
-        $error = $this->model->validateInput(array('id' => $id));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire"));
+        $rules = array(
+            'id' => 'Command ID is required.'
+        );
+        $error = $this->model->validateInput(array('id' => $id ) , $rules);
         if ($error !== null) {
             return $error;
         }
@@ -135,7 +138,7 @@ class CommandController extends BaseController {
     }
 
     public function getAll() {
-        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
         // Get all commands from the database
         $commands = $this->model->getAllCommands();
 
