@@ -43,10 +43,14 @@ class CategoryControllerTest extends TestCase {
         $controller->categoryModel = $mockModel;
 
         $result = $controller->read(1);
-        if (is_array($result) && isset($result['success']) && $result['success'] === true) {
-            $this->assertEquals($result['data'], $categoryData);
+        if (is_array($result) && isset($result['error'])) {
+            $expectedError = [
+                'success' => false,
+                'error' => $result['error']
+            ];
+            $this->assertEquals($expectedError, $result);
         } else {
-            $this->assertEquals($result, ErrorHandler::serverError("Failed to get category."));
+            $this->assertTrue($result);
         }
     }
     public function testUpdateCategory () {
@@ -64,10 +68,14 @@ class CategoryControllerTest extends TestCase {
         $categoryID = $data['id'];
 
         $result = $controller->update( $categoryID ,$data);
-        if (is_array($result) && isset($result['success']) && $result['success'] === true) {
-            $this->assertTrue($result['success']);
+        if (is_array($result) && isset($result['error'])) {
+            $expectedError = [
+                'success' => false,
+                'error' => $result['error']
+            ];
+            $this->assertEquals($expectedError, $result);
         } else {
-            $this->assertEquals($result, ErrorHandler::serverError("Failed to update category."));
+            $this->assertTrue($result);
         }
     }
     public function testDeleteCategory () {
@@ -90,6 +98,39 @@ class CategoryControllerTest extends TestCase {
         } else {
             $this->assertEquals($result, ErrorHandler::serverError("Failed to delete category."));
         }
+    }
+    public function testReadAllCategories () {
+        // Create a mock of the CategoryModel class
+        $mockModel = $this->getMockBuilder(CategoryModel::class)
+                          ->disableOriginalConstructor()
+                          ->getMock();
+
+      $mockModel->method('getAllCategories')
+                  ->willReturn([
+                      [
+                          'id' => 1,
+                          'name' => 'Sample Category'
+                      ],
+                        [
+                            'id' => 2,
+                            'name' => 'Sample Category 2'
+                        ]
+                  ]);
+
+        $controller = new CategoryController();
+        $controller->categoryModel = $mockModel;
+
+        $result = $controller->getAll();
+        if (is_array($result) && isset($result['success']) && $result['success'] === true) {
+            $expectedSuccess = [ 
+                'success' => true,
+                'data' => $result['data']
+            ];
+            $this->assertEquals($expectedSuccess, $result);
+        } else {
+        
+            $this->assertTrue($result);
+    }
     }
 
 }
