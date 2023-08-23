@@ -70,5 +70,26 @@ class CategoryControllerTest extends TestCase {
             $this->assertEquals($result, ErrorHandler::serverError("Failed to update category."));
         }
     }
+    public function testDeleteCategory () {
+        // Create a mock of the CategoryModel class
+        $mockModel = $this->getMockBuilder(CategoryModel::class)
+                          ->onlyMethods(['deleteCategory'])
+                          ->getMock();
+        $controller = new CategoryController();
+        $controller->categoryModel = $mockModel;
+
+        $data = [
+            'id' => 1,
+            'name' => 'Sample Category'
+        ];
+        $categoryID = $data['id'];
+
+        $result = $controller->delete($categoryID);
+        if (is_array($result) && isset($result['success']) && $result['success'] === true) {
+            $this->assertTrue($result['success']);
+        } else {
+            $this->assertEquals($result, ErrorHandler::serverError("Failed to delete category."));
+        }
+    }
 
 }
