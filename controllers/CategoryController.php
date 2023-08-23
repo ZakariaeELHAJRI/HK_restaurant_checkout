@@ -12,7 +12,7 @@ class CategoryController extends BaseController {
     }
 
     public function create($data) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire"));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $errorMessages = array(
             'name' => 'Category name is required.'
         );
@@ -37,7 +37,7 @@ class CategoryController extends BaseController {
     }
 
     public function read($id) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
         $rules = array(
             'id' => 'category ID is required.'
         );
@@ -63,7 +63,7 @@ class CategoryController extends BaseController {
     }
 
     public function update($id, $data) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire"));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire"));
        $errorMessages = array(
             'name' => 'Category name is required.'
         );
@@ -93,7 +93,7 @@ class CategoryController extends BaseController {
     }
 
     public function delete($id) {
-        RoleMiddleware::authorizeRoles(array("gestionnaire"));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $rules = array(
             'id' => 'category ID is required.'
         );
@@ -117,7 +117,7 @@ class CategoryController extends BaseController {
     }
 
     public function getAll() {
-        RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
+        //RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
         // Get all categories from the database
         $categories = $this->model->getAllCategories();
 
