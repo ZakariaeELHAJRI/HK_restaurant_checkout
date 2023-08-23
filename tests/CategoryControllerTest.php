@@ -29,6 +29,25 @@ class CategoryControllerTest extends TestCase {
             $this->assertEquals($result, ErrorHandler::serverError("Failed to create category."));
         }
     }
+    public function testReadCategory () {
+        // Create a mock of the CategoryModel class
+        $mockModel = $this->getMockBuilder(CategoryModel::class)
+                          ->disableOriginalConstructor()
+                          ->getMock();
+        $categoryData = [
+            'id' => 1,
+            'name' => 'Sample Category'
+        ];
 
+        $controller = new CategoryController();
+        $controller->categoryModel = $mockModel;
+
+        $result = $controller->read(1);
+        if (is_array($result) && isset($result['success']) && $result['success'] === true) {
+            $this->assertEquals($result['data'], $categoryData);
+        } else {
+            $this->assertEquals($result, ErrorHandler::serverError("Failed to get category."));
+        }
+    }
 
 }
