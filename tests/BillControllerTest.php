@@ -107,7 +107,7 @@ class BillControllerTest extends TestCase {
         }
     }
 
-     /*
+     
     public function testGetAllBills () {
         // Create a mock of the BillModel class
         $mockModel = $this->getMockBuilder(BillModel::class)
@@ -142,5 +142,5 @@ class BillControllerTest extends TestCase {
             $this->assertTrue($result);
         }
     }
- */
+ 
 }
