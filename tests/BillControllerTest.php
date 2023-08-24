@@ -61,7 +61,7 @@ class BillControllerTest extends TestCase {
             $this->assertTrue($result);
         }
     }
-     /*
+     
     public function testUpdateBill () {
         // Create a mock of the BillModel class
         $mockModel = $this->getMockBuilder(BillModel::class)
@@ -86,6 +86,7 @@ class BillControllerTest extends TestCase {
             $this->assertTrue($result);
         }
     }
+    /*
     public function testDeleteBill () {
         // Create a mock of the BillModel class
         $mockModel = $this->getMockBuilder(BillModel::class)
