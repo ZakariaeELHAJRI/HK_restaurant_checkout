@@ -14,7 +14,7 @@ class LigneCommandController extends BaseController {
     }
 
     public function create($data) {
-        //RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
+        RoleMiddleware::authorizeRoles(array("gestionnaire" , "caissier"));
         $requiredFields = array(
             'quantity' => 'Ligne command quantity is required.',
             'id_command' => 'Ligne command id_command is required.',
@@ -49,7 +49,7 @@ class LigneCommandController extends BaseController {
     }
 
     public function read($id) {
-        //RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
+        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
         $requiredFields = array(
             'id' => 'Ligne command ID is required.'
         );
@@ -75,7 +75,7 @@ class LigneCommandController extends BaseController {
     }
 
     public function update($id, $data) {
-        //RoleMiddleware::authorizeRoles(array("gestionnaire"));
+        RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $requiredFields = array(
             'quantity' => 'Ligne command quantity is required.',
             'id_command' => 'Ligne command id_command is required.',
@@ -126,7 +126,7 @@ class LigneCommandController extends BaseController {
     }
 
     public function delete($id) {
-        //RoleMiddleware::authorizeRoles(array("gestionnaire"));
+        RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $requiredFields = array(
             'id' => 'Ligne command ID is required.'
         );
@@ -150,7 +150,7 @@ class LigneCommandController extends BaseController {
     }
 
     public function getAll() {
-        //RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
+        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
         // Get all ligne commands from the database
         $ligne_commands = $this->model->getAllLigneCommands();
 
