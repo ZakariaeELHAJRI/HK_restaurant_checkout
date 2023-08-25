@@ -46,7 +46,10 @@ class BillController extends BaseController {
 
     public function read($id) {
         RoleMiddleware::authorizeRoles(array("gestionnaire", "patron" , "caissier"));
-        $error = $this->model->validateInput(array('id' => $id));
+        $rules = array(
+            'id' => 'Bill ID is required.'
+        );
+        $error = $this->model->validateInput(array('id' => $id) , $rules);
         if ($error !== null) {
             return $error;
         }
@@ -97,7 +100,10 @@ class BillController extends BaseController {
 
     public function delete($id) {
         RoleMiddleware::authorizeRoles(array("gestionnaire"));
-        $error = $this->model->validateInput(array('id' => $id));
+        $rules = array(
+            'id' => 'Bill ID is required.'
+        );
+        $error = $this->model->validateInput(array('id' => $id) , $rules);
         if ($error !== null) {
             return $error;
         }
