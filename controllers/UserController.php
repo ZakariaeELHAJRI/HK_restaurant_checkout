@@ -12,7 +12,7 @@ class UserController extends BaseController {
     }
 
     public function create($data) {
-    // RoleMiddleware::authorizeRoles(array("gestionnaire"));
+RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $errorMessages = array(
             'username' => 'Username is required.',
             'email' => 'Valid email is required.',
@@ -46,7 +46,7 @@ class UserController extends BaseController {
     }
 
     public function read($id) {
-   //  RoleMiddleware::authorizeRoles(array("gestionnaire"));
+   RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $rules = array(
             'id' => 'User ID is required.'
         );
@@ -73,7 +73,7 @@ class UserController extends BaseController {
     }
 
     public function update($id, $data) {
-     //  RoleMiddleware::authorizeRoles(array("gestionnaire"));
+     RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $rules = array(
             'username' => 'Username is required.',
             'email' => 'Valid email is required.',
@@ -122,7 +122,7 @@ class UserController extends BaseController {
     
 
     public function delete($id) {
-      //  RoleMiddleware::authorizeRoles(array("gestionnaire"));
+      RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $rules = array(
             'id' => 'User ID is required.'
         );
@@ -144,7 +144,7 @@ class UserController extends BaseController {
     }
 
     public function getAll() {
-     //  RoleMiddleware::authorizeRoles(array("gestionnaire"));
+     RoleMiddleware::authorizeRoles(array("gestionnaire"));
         // Get all users from the database
         return $this->model->getAllUsers();
     }
