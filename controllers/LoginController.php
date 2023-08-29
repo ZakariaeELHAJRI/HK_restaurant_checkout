@@ -32,7 +32,8 @@ class LoginController {
             $jwtToken = JWT::encode($jwtPayload, 'test123_test123', 'HS256');
             return array(
                 "success" => true,
-                "token" => $jwtToken
+                "token" => $jwtToken ,
+                "role" => $user['role']
             );
         } else {
 

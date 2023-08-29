@@ -12,7 +12,7 @@ class UserController extends BaseController {
     }
 
     public function create($data) {
-RoleMiddleware::authorizeRoles(array("gestionnaire"));
+     RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $errorMessages = array(
             'username' => 'Username is required.',
             'email' => 'Valid email is required.',
