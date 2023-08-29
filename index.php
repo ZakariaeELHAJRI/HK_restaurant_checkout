@@ -1,5 +1,11 @@
 <?php
 header("Content-Type: application/json");
+header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+header('Access-Control-Allow-Credentials: true');
+
+
 
 // Get the HTTP method (GET, POST, PUT, DELETE)
 $method = $_SERVER['REQUEST_METHOD'];
@@ -9,7 +15,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 // Routing
 $uri = $_SERVER['REQUEST_URI'];
-$base_path = '/api_orders/api/index.php/';
+$base_path = '/api_orders/api/index.php/'; // don't forget to change /api_orders/api/ to your own path
 $endpoint = str_replace($base_path, '', $uri);
 
 // Split the endpoint into parts
