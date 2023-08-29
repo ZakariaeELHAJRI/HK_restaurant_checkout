@@ -15,6 +15,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 // Routing
 $uri = $_SERVER['REQUEST_URI'];
+
 $base_path = '/api_orders/api/index.php/'; // don't forget to change /api_orders/api/ to your own path
 $endpoint = str_replace($base_path, '', $uri);
 
