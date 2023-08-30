@@ -39,7 +39,7 @@ class LoginController {
 
             return array(
                 "success" => false,
-                "message" => "$user[password]"
+                "message" => "Invalid password."
             );
         }
     }
