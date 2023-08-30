@@ -4,26 +4,17 @@ header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Credentials: true');
-
-
-
-// Get the HTTP method (GET, POST, PUT, DELETE)
 $method = $_SERVER['REQUEST_METHOD'];
-
 // Get the request data
 $data = json_decode(file_get_contents("php://input"), true);
-
 // Routing
 $uri = $_SERVER['REQUEST_URI'];
-
 $base_path = '/api_orders/api/index.php/'; // don't forget to change /api_orders/api/ to your own path
 $endpoint = str_replace($base_path, '', $uri);
 
 // Split the endpoint into parts
 $parts = explode('/', $endpoint);
-// Extract the first part as the resource name (student or command)
 $resource = array_shift($parts);
-// Based on the resource name, instantiate the appropriate controller
 $controller = null;
 if ($resource === 'login') {
     require_once('./controllers/LoginController.php');
