@@ -10,7 +10,6 @@ class UserController extends BaseController {
     public function __construct() {
         $this->model = new UserModel();
     }
-
     public function create($data) {
      RoleMiddleware::authorizeRoles(array("gestionnaire"));
         $errorMessages = array(
@@ -20,13 +19,10 @@ class UserController extends BaseController {
             'telephone' => 'Telephone is required.',
             'role' => 'Role is required.'
         );
-
         $error = $this->model->validateInput($data, $errorMessages);
-
         if ($error !== null) {
             return $error;
         }
-
         // Set attributes in the model
         $this->setModelAttributes($data);
         //before creating the user, check if the user already exists in the database by email
@@ -34,13 +30,10 @@ class UserController extends BaseController {
     if ($user) {
         return ErrorHandler::badRequestError("User already exists.");
     }
-
         // Hash the password
         $hashedPassword = password_hash($this->model->getPassword(), PASSWORD_BCRYPT);
-
         // Set the hashed password in the model
         $this->model->setPassword($hashedPassword);
-
         // Create the user in the database
         return $this->model->createUser();
     }
@@ -50,7 +43,6 @@ class UserController extends BaseController {
         $rules = array(
             'id' => 'User ID is required.'
         );
-
         $error =$this->model->validateInput( array('id' => $id),  $rules);
 
         if ($error !== null) {
