@@ -150,7 +150,7 @@ class CommandController extends BaseController {
 
     // get getCommandAndLigneCommand
     public function getCommandAndLigneCommand() {
-        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
+        RoleMiddleware::authorizeRoles(array("gestionnaire"));
         // Get all commands from the database
         $commands = $this->model->getCommandAndLigneCommand();
 
