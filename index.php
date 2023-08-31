@@ -26,6 +26,16 @@ if ($resource === 'login') {
         exit;
     }
 }
+if ($resource === 'commandall') {
+    require_once('./controllers/CommandController.php');
+        $controller = new CommandController();
+    
+    if ($method === 'GET') {
+        $response = $controller->getCommandAndLigneCommand();
+        echo json_encode($response);
+        exit;
+    }
+}
 switch ($resource) {
     case 'user':
         require_once('./controllers/UserController.php');
@@ -38,6 +48,16 @@ switch ($resource) {
     case 'command':
         require_once('./controllers/CommandController.php');
         $controller = new CommandController();
+        break;
+    case 'commandall' :
+        require_once('./controllers/CommandController.php');
+        $controller = new CommandController();
+    
+    if ($method === 'GET') {
+        $response = $controller->getCommandAndLigneCommand();
+        echo json_encode($response);
+        exit;
+    }
         break;
     case 'ligneCommand':
         require_once('./controllers/LigneCommandController.php');
