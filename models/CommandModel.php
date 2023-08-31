@@ -1,5 +1,7 @@
 <?php
 require_once(__DIR__.'/../config/database.php');
+// ligne command model
+require_once(__DIR__.'/../models/LigneCommandModel.php');
 
 class CommandModel {
     private $conn;
@@ -51,6 +53,21 @@ class CommandModel {
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_assoc();
+    }
+
+    // get  join command and ligne command ( command_id , user_id (username) , quantity , product_id (product_name))
+    public function getCommandAndLigneCommand() {
+        $stmt = $this->conn->prepare("SELECT commands.id , commands.creation_date , users.username ,users.id, ligne_commands.quantity , products.name FROM commands INNER JOIN users ON commands.user_id = users.id INNER JOIN ligne_commands ON commands.id = ligne_commands.id_command INNER JOIN products ON ligne_commands.product_id = products.id");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $commands = array();
+
+        while ($row = $result->fetch_assoc()) {
+            $commands[] = $row;
+        }
+
+        return $commands;
+
     }
 
     public function updateCommand() {
