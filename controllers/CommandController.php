@@ -148,6 +148,18 @@ class CommandController extends BaseController {
         );
     }
 
+    // get getCommandAndLigneCommand
+    public function getCommandAndLigneCommand() {
+        RoleMiddleware::authorizeRoles(array("gestionnaire", "patron"));
+        // Get all commands from the database
+        $commands = $this->model->getCommandAndLigneCommand();
+
+        return array(
+            "success" => true,
+            "data" => $commands
+        );
+    }
+
     private function setModelAttributes($data) {
         if (isset($data['creation_date'])) {
             $this->model->setCreationDate($data['creation_date']);
