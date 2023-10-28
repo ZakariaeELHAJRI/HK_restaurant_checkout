@@ -9,6 +9,7 @@ class BillModel {
     private $payment_method;
     private $command_id;
 
+
     
     public function __construct() {
         $this->conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
